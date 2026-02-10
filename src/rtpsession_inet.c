@@ -219,15 +219,13 @@ static ortp_socket_t create_and_bind(const char *addr, int *port, int *sock_fami
 			}
 		}
 
-#if defined(ORTP_TIMESTAMP)
 		optval=1;
-		err = setsockopt (sock, SOL_SOCKET, SO_TIMESTAMP,
+		err = setsockopt (sock, SOL_SOCKET, SO_TIMESTAMPNS,
 			(SOCKET_OPTION_VALUE)&optval, sizeof (optval));
 		if (err < 0)
 		{
 			ortp_warning ("Fail to set rtp timestamp: %s.",getSocketError());
 		}
-#endif
 		err = 0;
 		optval=1;
 		switch (res->ai_family) {
@@ -1299,11 +1297,9 @@ int rtp_session_rtp_recv_abstract(ortp_socket_t socket, mblk_t *msg, int flags, 
 		ret = bytes_received;
 #endif
 		for (cmsghdr = CMSG_FIRSTHDR(&msghdr); cmsghdr != NULL ; cmsghdr = CMSG_NXTHDR(&msghdr, cmsghdr)) {
-#if defined(ORTP_TIMESTAMP)
-			if (cmsghdr->cmsg_level == SOL_SOCKET && cmsghdr->cmsg_type == SO_TIMESTAMP) {
+			if (cmsghdr->cmsg_level == SOL_SOCKET && cmsghdr->cmsg_type == SCM_TIMESTAMPNS) {
 				memcpy(&msg->timestamp, (struct timeval *)CMSG_DATA(cmsghdr), sizeof(struct timeval));
 			}
-#endif
 #ifdef IP_PKTINFO
 			if ((cmsghdr->cmsg_level == IPPROTO_IP) && (cmsghdr->cmsg_type == IP_PKTINFO)) {
 				struct in_pktinfo *pi = (struct in_pktinfo *)CMSG_DATA(cmsghdr);

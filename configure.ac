@@ -111,9 +111,6 @@ AC_ARG_ENABLE(ntp-timestamp,
 	esac],
 	[ntptimestamp=false]
 )
-if test x$ntptimestamp = xtrue ; then
-	ORTP_DEFS="$ORTP_DEFS -DORTP_TIMESTAMP"
-fi
 
 AC_ARG_ENABLE(mode64bit,
 	[AS_HELP_STRING([--enable-mode64bit], [Produce a 64-bit library (default=no)])],

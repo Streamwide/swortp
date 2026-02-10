@@ -282,10 +282,7 @@ typedef unsigned char bool_t;
 
 typedef struct _OList OList;
 
-typedef struct ortpTimeSpec{
-	int64_t tv_sec;
-	int64_t tv_nsec;
-}ortpTimeSpec;
+typedef struct timespec ortpTimeSpec;
 
 #ifdef __cplusplus
 extern "C"{

@@ -33,7 +33,7 @@ set(CMAKE_CXX_EXTENSIONS ON)
 
 set(ORTP_MAJOR_VERSION "0")
 set(ORTP_MINOR_VERSION "26")
-set(ORTP_MICRO_VERSION "2") # SW: increment this as a way to indicate a new 'release'
+set(ORTP_MICRO_VERSION "4") # SW: increment this as a way to indicate a new 'release'
 set(ORTP_VERSION "${ORTP_MAJOR_VERSION}.${ORTP_MINOR_VERSION}.${ORTP_MICRO_VERSION}")
 set(ORTP_SO_VERSION "11") # incremented on January, the 20th 2015. DO NOT INCREMENT BEFORE ORTP 0.26
 
@@ -109,9 +109,6 @@ if(ENABLE_STATIC)
 endif()
 if(ENABLE_PERF)
 	set(PERF 1)
-endif()
-if(ENABLE_NTP_TIMESTAMP)
-	set(ORTP_TIMESTAMP 1)
 endif()
 if(ENABLE_DEBUG_LOGS)
 	set(ORTP_DEBUG_MODE 1)
