@@ -1234,7 +1234,7 @@ rtp_session_rtcp_send (RtpSession * session, mblk_t * m){
 	if (session->rtcp.enabled){
 		if ( (sockfd!=(ortp_socket_t)-1 && (destlen>0 || using_connected_socket))
 			|| rtp_session_using_transport(session, rtcp) ) {
-			rtp_session_rtcp_sendto(session,m,destaddr,destlen,FALSE);
+			error = rtp_session_rtcp_sendto(session,m,destaddr,destlen,FALSE);
 		}
 		// for(elem=session->rtcp.gs.aux_destinations;elem!=NULL;elem=elem->next){
 		// 	OrtpAddress *addr=(OrtpAddress*)elem->data;
