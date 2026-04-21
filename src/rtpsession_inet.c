@@ -167,6 +167,46 @@ static int set_multicast_group(ortp_socket_t sock, const char *addr){
 #endif
 }
 
+/**
+ *rtp_session_set_local_addr:
+ *@param session:       a rtp session freshly created.
+ *@param addr:          a local IP address in the xxx.xxx.xxx.xxx form.
+ *@param rtp_port:      a local port or -1 to let oRTP choose the port randomly
+ *@param rtcp_port:     a local port or -1 to let oRTP choose the port randomly, -2 for no RTCP port
+ *
+ *	Specify the local addr to be use to listen for rtp packets or to send rtp packet from.
+ *	In case where the rtp session is send-only, then it is not required to call this function:
+ *	when calling rtp_session_set_remote_addr(), if no local address has been set, then the
+ *	default INADRR_ANY (0.0.0.0) IP address with a random port will be used. Calling
+ *	rtp_session_set_local_addr() is mandatory when the session is recv-only or duplex.
+ *
+ *	Returns: 0 on success.
+**/
+#ifdef __EMSCRIPTEN__
+int rtp_session_set_local_addr(RtpSession * session, const char * addr, int rtp_port, int rtcp_port) {
+	struct sockaddr_in*  sin  = (struct sockaddr_in*)&session->rtp.gs.loc_addr;
+    struct sockaddr_in6* sin6 = (struct sockaddr_in6*)&session->rtp.gs.loc_addr;
+    if (inet_pton(AF_INET, s, &(sin->sin_addr)) == 1) {
+		session->rtp.gs.loc_addrlen = sizeof(*sin);
+	} else if (inet_pton(AF_INET6, s, &(sin6->sin6_addr)) == 1) {
+		session->rtp.gs.loc_addrlen = sizeof(*sin6);
+    } else {
+		return -1;
+	}
+
+	session->rtp.gs.loc_port=rtp_port;
+	if (rtcp_port != -2) {
+		session->rtcp.gs.loc_addrlen = session->rtp.gs.loc_addrlen;
+		memcpy(&session->rtp.gs.loc_addr, &session->rtp.gs.loc_addr, session->rtp.gs.loc_addrlen);
+		session->rtcp.gs.loc_port=rtcp_port;
+	}
+
+	ortp_message("RtpSession fake 'bound' to [%s] ports [%i] [%i]", addr, rtp_port, rtcp_port);
+	return 0;
+}
+#else 
+
+
 static ortp_socket_t create_and_bind(const char *addr, int *port, int *sock_family, bool_t reuse_addr,struct sockaddr_storage* bound_addr,socklen_t *bound_addr_len){
 	int err;
 	int optval = 1;
@@ -334,22 +374,6 @@ static void set_socket_sizes(ortp_socket_t sock, unsigned int sndbufsz, unsigned
 	}
 }
 
-/**
- *rtp_session_set_local_addr:
- *@param session:       a rtp session freshly created.
- *@param addr:          a local IP address in the xxx.xxx.xxx.xxx form.
- *@param rtp_port:      a local port or -1 to let oRTP choose the port randomly
- *@param rtcp_port:     a local port or -1 to let oRTP choose the port randomly, -2 for no RTCP port
- *
- *	Specify the local addr to be use to listen for rtp packets or to send rtp packet from.
- *	In case where the rtp session is send-only, then it is not required to call this function:
- *	when calling rtp_session_set_remote_addr(), if no local address has been set, then the
- *	default INADRR_ANY (0.0.0.0) IP address with a random port will be used. Calling
- *	rtp_session_set_local_addr() is mandatory when the session is recv-only or duplex.
- *
- *	Returns: 0 on success.
-**/
-
 int
 rtp_session_set_local_addr (RtpSession * session, const char * addr, int rtp_port, int rtcp_port)
 {
@@ -393,6 +417,7 @@ rtp_session_set_local_addr (RtpSession * session, const char * addr, int rtp_por
 	ortp_error("Could not bind RTP socket to %s on port %i for session [%p]",addr,rtp_port,session);
 	return -1;
 }
+#endif
 
 static void _rtp_session_recreate_sockets(RtpSession *session){
 	char addr[NI_MAXHOST];
