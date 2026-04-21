@@ -186,9 +186,9 @@ static int set_multicast_group(ortp_socket_t sock, const char *addr){
 int rtp_session_set_local_addr(RtpSession * session, const char * addr, int rtp_port, int rtcp_port) {
 	struct sockaddr_in*  sin  = (struct sockaddr_in*)&session->rtp.gs.loc_addr;
     struct sockaddr_in6* sin6 = (struct sockaddr_in6*)&session->rtp.gs.loc_addr;
-    if (inet_pton(AF_INET, s, &(sin->sin_addr)) == 1) {
+    if (inet_pton(AF_INET, addr, &(sin->sin_addr)) == 1) {
 		session->rtp.gs.loc_addrlen = sizeof(*sin);
-	} else if (inet_pton(AF_INET6, s, &(sin6->sin6_addr)) == 1) {
+	} else if (inet_pton(AF_INET6, addr, &(sin6->sin6_addr)) == 1) {
 		session->rtp.gs.loc_addrlen = sizeof(*sin6);
     } else {
 		return -1;
