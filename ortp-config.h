@@ -22,8 +22,8 @@
 
 #define ORTP_MAJOR_VERSION 0
 #define ORTP_MINOR_VERSION 26
-#define ORTP_MICRO_VERSION 6
-#define ORTP_VERSION "0.26.6"
+#define ORTP_MICRO_VERSION 7
+#define ORTP_VERSION "0.26.7"
 
 #define HAVE_SYS_UIO_H 1
 /* #undef HAVE_SYS_AUDIO_H */
