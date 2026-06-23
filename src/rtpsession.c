@@ -269,6 +269,7 @@ rtp_session_init (RtpSession * session, int mode)
 	session->rtcp.send_algo.allow_early = TRUE;
 
 	/* init signal tables */
+	rtp_signal_table_init (&session->on_rtp_markbit, session, "rtp_markbit");
 	rtp_signal_table_init (&session->on_ssrc_changed, session,"ssrc_changed");
 	rtp_signal_table_init (&session->on_payload_type_changed, session,"payload_type_changed");
 	rtp_signal_table_init (&session->on_telephone_event, session,"telephone-event");
@@ -534,6 +535,8 @@ void rtp_session_set_rtp_socket_recv_buffer_size(RtpSession * session, unsigned 
  *	a user supplied function in charge of processing it. The application can register
  *	several callbacks for the same signal, in the limit of \a RTP_CALLBACK_TABLE_MAX_ENTRIES.
  *	Here are name and meaning of supported signals types:
+ *
+ *	"rtp_markbit" : the received RTP packet is set
  *
  *	"ssrc_changed" : the SSRC of the incoming stream has changed.
  *

@@ -168,6 +168,10 @@ void rtp_session_rtp_parse(RtpSession *session, mblk_t *mp, uint32_t local_str_t
 		return;
 	}
 
+	if (rtp->markbit) {
+		rtp_signal_table_emit(&session->on_rtp_markbit);
+	}
+
 	/* only count non-stun packets. */
 	ortp_global_stats.packet_recv++;
 	stats->packet_recv++;

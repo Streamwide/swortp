@@ -367,6 +367,7 @@ struct _RtpSession
 	int hw_recv_pt; /* recv payload type before jitter buffer */
 	int recv_buf_size;
 	int target_upload_bandwidth; /* Target upload bandwidth at nework layer (with IP and UDP headers) in bits/s */
+	RtpSignalTable on_rtp_markbit;
 	RtpSignalTable on_ssrc_changed;
 	RtpSignalTable on_payload_type_changed;
 	RtpSignalTable on_telephone_event_packet;
