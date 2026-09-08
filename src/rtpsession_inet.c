@@ -1165,7 +1165,9 @@ static int rtp_session_rtp_sendto(RtpSession * session, mblk_t * m, struct socka
 	int error;
 	if (rtp_session_using_transport(session, rtp)){
 		error = (session->rtp.gs.tr->t_sendto) (session->rtp.gs.tr,m,0,destaddr,destlen);
-	}else{
+	} else if (destlen == 0) {
+		return 0;
+	} else {
 		error=_rtp_session_sendto(session, TRUE,m,0,destaddr,destlen);
 	}
 	if (!is_aux){
@@ -1207,7 +1209,7 @@ int rtp_session_rtp_send (RtpSession * session, mblk_t * m){
 		destlen=0;
 	}
 	/*first send to main destination*/
-	if (destlen) error=rtp_session_rtp_sendto(session,m,destaddr,destlen,FALSE);
+	error=rtp_session_rtp_sendto(session,m,destaddr,destlen,FALSE);
 	/*then iterate over auxiliary destinations*/
 	// for(elem=session->rtp.gs.aux_destinations;elem!=NULL;elem=elem->next){
 	// 	OrtpAddress *addr=(OrtpAddress*)elem->data;
