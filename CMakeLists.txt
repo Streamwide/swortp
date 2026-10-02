@@ -31,9 +31,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-set(ORTP_MAJOR_VERSION "0")
-set(ORTP_MINOR_VERSION "26")
-set(ORTP_MICRO_VERSION "7") # SW: increment this as a way to indicate a new 'release'
+set(ORTP_MAJOR_VERSION 0)
+set(ORTP_MINOR_VERSION 26)
+set(ORTP_MICRO_VERSION 7) # SW: increment this as a way to indicate a new 'release'
 set(ORTP_VERSION "${ORTP_MAJOR_VERSION}.${ORTP_MINOR_VERSION}.${ORTP_MICRO_VERSION}")
 set(ORTP_SO_VERSION "11") # incremented on January, the 20th 2015. DO NOT INCREMENT BEFORE ORTP 0.26
 
@@ -123,6 +123,11 @@ set(POSIXTIMER_INTERVAL 10000)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ortp-config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/ortp-config.h)
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/ortp-config.h PROPERTIES GENERATED ON)
 add_definitions(-DHAVE_CONFIG_H)
+
+add_definitions(-DORTP_MAJOR_VERSION=${ORTP_MAJOR_VERSION})
+add_definitions(-DORTP_MINOR_VERSION=${ORTP_MINOR_VERSION})
+add_definitions(-DORTP_MICRO_VERSION=${ORTP_MICRO_VERSION})
+add_definitions(-DORTP_VERSION="${ORTP_VERSION}")
 
 set(STRICT_OPTIONS_CPP )
 set(STRICT_OPTIONS_C )
