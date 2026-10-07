@@ -97,6 +97,11 @@ else()
 		endif()
 	endif()
 endif()
+target_include_directories(ortp
+    PUBLIC
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
 target_link_libraries(ortp ${LIBS})
 
 install(TARGETS ortp EXPORT ${EXPORT_TARGETS_NAME}Targets
