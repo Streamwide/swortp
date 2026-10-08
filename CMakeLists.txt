@@ -31,16 +31,15 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-set(ORTP_MAJOR_VERSION "0")
-set(ORTP_MINOR_VERSION "26")
-set(ORTP_MICRO_VERSION "7") # SW: increment this as a way to indicate a new 'release'
+set(ORTP_MAJOR_VERSION 0)
+set(ORTP_MINOR_VERSION 26)
+set(ORTP_MICRO_VERSION 7) # SW: increment this as a way to indicate a new 'release'
 set(ORTP_VERSION "${ORTP_MAJOR_VERSION}.${ORTP_MINOR_VERSION}.${ORTP_MICRO_VERSION}")
 set(ORTP_SO_VERSION "11") # incremented on January, the 20th 2015. DO NOT INCREMENT BEFORE ORTP 0.26
 
 
 option(ENABLE_STATIC "Build static library (default is shared library)." NO)
-option(ENABLE_DOC "Enable documentation generation with Doxygen." YES)
-option(ENABLE_NTP_TIMESTAMP "Turn on NTP timestamping on packet reception." YES)
+option(ENABLE_DOC "Enable documentation generation with Doxygen." NO)
 option(ENABLE_PERF "Disable costly features to reduce cpu consumtion and increase performance." NO)
 option(ENABLE_STRICT "Build with strict compile options." YES)
 option(ENABLE_TESTS "Enable compilation of test programs." NO)
