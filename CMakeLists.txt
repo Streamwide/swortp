@@ -123,11 +123,6 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/ortp-config.h.cmake ${CMAKE_CURRENT_B
 set_source_files_properties(${CMAKE_CURRENT_BINARY_DIR}/ortp-config.h PROPERTIES GENERATED ON)
 add_definitions(-DHAVE_CONFIG_H)
 
-add_definitions(-DORTP_MAJOR_VERSION=${ORTP_MAJOR_VERSION})
-add_definitions(-DORTP_MINOR_VERSION=${ORTP_MINOR_VERSION})
-add_definitions(-DORTP_MICRO_VERSION=${ORTP_MICRO_VERSION})
-add_definitions(-DORTP_VERSION="${ORTP_VERSION}")
-
 set(STRICT_OPTIONS_CPP )
 set(STRICT_OPTIONS_C )
 if(NOT MSVC)
