@@ -1,3 +1,11 @@
+# Changelog
+
+## [0.26.7] - 2026-10-08
+### Changed
+- When using external transport addr can be empty within rtp_session_rtp_sendto
+  since it don't really make since for any tcp based transport to have mandatory dest addr
+
+## [previous changelog]
 2007-07-26  Francois-Xavier Kowalski  <fix@hp.com>
 
 	* pkg.list: 1.3 
