@@ -21,10 +21,23 @@
 #include "ortp/ortp.h"
 #include "utils.h"
 
-static size_t rtcp_get_size(const mblk_t *m){
-	const rtcp_common_header_t *ch=rtcp_get_common_header(m);
-	if (ch==NULL) return 0;
-	return (1+rtcp_common_header_get_length(ch))*4;
+size_t rtcp_get_size(const mblk_t *m){
+	const rtcp_common_header_t *ch = rtcp_get_common_header(m);
+	size_t claimed;
+	size_t avail;
+
+	if (ch == NULL) {
+		return 0;
+	}
+
+	claimed = (1 + rtcp_common_header_get_length(ch)) * 4;
+	avail = (size_t)(m->b_wptr - m->b_rptr);
+	if (claimed > avail) {
+		ortp_warning("RTCP packet claims size [%u] but only [%u] bytes are available, dropping.",
+		(unsigned)claimed, (unsigned)avail);
+		return 0;
+	}
+	return claimed;
 }
 
 /*in case of compound packet, set read pointer of m to the beginning of the next RTCP
