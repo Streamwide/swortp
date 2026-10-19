@@ -104,6 +104,8 @@ static LPFN_WSARECVMSG ortp_WSARecvMsg = NULL;
 #define IN6_IS_ADDR_MULTICAST(i)	(((uint8_t *) (i))[0] == 0xff)
 #endif
 
+size_t rtcp_get_size(const mblk_t *m);
+
 static int
 _rtp_session_set_remote_addr_full (RtpSession * session, const char * rtp_addr, int rtp_port, const char * rtcp_addr, int rtcp_port, bool_t is_aux);
 
@@ -1420,16 +1422,28 @@ static void compute_rtt_from_report_block(RtpSession *session, const struct time
 
 static void compute_rtcp_xr_statistics(RtpSession *session, mblk_t *block, const struct timeval *now) {
 	uint64_t ntp_timestamp;
+	size_t avail = rtcp_get_size(block);
+	size_t hdr = sizeof(rtcp_xr_header_t) + sizeof(rtcp_xr_generic_block_header_t);
 	OrtpRtcpXrStats *stats = &session->rtcp_xr_stats;
+
+	if (avail < hdr) {
+		return;
+	}
 
 	switch (rtcp_XR_get_block_type(block)) {
 		case RTCP_XR_RCVR_RTT:
+			if (avail < hdr + sizeof(rtcp_xr_rcvr_rtt_report_block_t)) {
+				return;
+			}
 			ntp_timestamp = rtcp_XR_rcvr_rtt_get_ntp_timestamp(block);
 			stats->last_rcvr_rtt_ts = (ntp_timestamp >> 16) & 0xffffffff;
 			stats->last_rcvr_rtt_time.tv_sec = now->tv_sec;
 			stats->last_rcvr_rtt_time.tv_usec = now->tv_usec;
 			break;
 		case RTCP_XR_DLRR:
+			if (avail < hdr + sizeof(rtcp_xr_dlrr_report_subblock_t)) {
+				return;
+			}
 			compute_rtt(session, now, rtcp_XR_dlrr_get_lrr(block), rtcp_XR_dlrr_get_dlrr(block));
 			break;
 		default:
