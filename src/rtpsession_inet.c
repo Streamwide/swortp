@@ -1508,6 +1508,7 @@ static int process_rtcp_packet( RtpSession *session, mblk_t *block, struct socka
 		}else{
 			/* discard in two case: the packet is not stun OR nobody is interested by STUN (no eventqs) */
 			ortp_warning("RtpSession [%p] receiving rtcp packet with version number != 2, discarded", session);
+			freemsg(block);
 		}
 		return -1;
 	}
