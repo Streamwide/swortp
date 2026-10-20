@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.26.10] - 2026-10-20
+### Fixed
+- memory leak in rtp_session_process_incoming on malformed message
+- truncated app name in rtcp newer gcc won't compile
+- XR parsing which wasn't checking size causing overflow
+- fix get_size in rtcpparse to fix crash in tmmbr and XR parsing
+- segfault in tmmbr parsing (when size it not the right one)
+
+
 ## [0.26.7] - 2026-10-08
 ### Changed
 - When using external transport addr can be empty within rtp_session_rtp_sendto
