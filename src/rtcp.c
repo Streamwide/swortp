@@ -370,7 +370,7 @@ static int rtcp_app_init(RtpSession *session, uint8_t *buf, uint8_t subtype, con
 	rtcp_common_header_init(&app->ch,session,RTCP_APP,subtype,size);
 	app->ssrc=htonl(session->snd.ssrc);
 	memset(app->name,0,4);
-	strncpy(app->name,name,4);
+	memcpy(app->name,name,4);
 	return sizeof(rtcp_app_t);
 }
 
