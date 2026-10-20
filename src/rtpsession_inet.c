@@ -1460,8 +1460,8 @@ static void notify_tmmbr_received(RtpSession *session, mblk_t *m) {
 			ortp_warning("RTCP failed to parse tmmbr dropping.");
 			return ;
 		}
-		*ev = ortp_event_new(ORTP_EVENT_TMMBR_RECEIVED);
-		*d = ortp_event_get_data(ev);
+		ev = ortp_event_new(ORTP_EVENT_TMMBR_RECEIVED);
+		d = ortp_event_get_data(ev);
 		d->packet = copymsg(m);
 		d->info.tmmbr_mxtbr = rtcp_fb_tmmbr_fci_get_mxtbr_mantissa(fci) * (1 << rtcp_fb_tmmbr_fci_get_mxtbr_exp(fci));
 		rtp_session_dispatch_event(session, ev);
